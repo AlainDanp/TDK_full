@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+}
+html,
+body{
+  position: relative;
+  height: 100%;
+}
+
+:root {
+  --primary-color: #85bdec;
+  --primary-color-dark:  #083668;
+  --text-dark: #0a0a0a;
+  --text-light: #737373;
+  --extra-light: #f3f4f6;
+  --white: #ffffff;
+  --max-width: 1200px;
+  --shadow:0 10px 30px rgba(0,0,0,.12);
+  --ink:#01234a;
+}
+
+a{
+  text-decoration: none;
+  color: inherit;
+  font-size: 13px;
+  padding-top: 20px;
+}
+
+.logo-image {
+  height: 180px;
+  width: auto;
+}

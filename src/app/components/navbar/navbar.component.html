@@ -1,0 +1,33 @@
+<nav>
+  <div class="nav__header">
+    <div class="nav__logo">
+      <a class="logo" [routerLink]="['/home']">TDK</a>
+    </div>
+
+    <button class="nav__menu__btn" type="button" (click)="toggleMenu()">
+      <i [ngClass]="menuIconClass"></i>
+    </button>
+  </div>
+
+  <ul class="nav__links" [class.open]="menuOpen" (click)="closeMenu()">
+    <li>
+      <a routerLink="/Home"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{ exact: true }">HOME
+      </a>
+    </li>
+    <li>
+      <a routerLink="/About" routerLinkActive="active">ABOUT</a>
+    </li>
+    <li>
+      <a routerLink="/Shop" routerLinkActive="active">SHOP</a>
+    </li>
+    <li>
+      <a routerLink="/Option" routerLinkActive="active">OPTION</a>
+    </li>
+    <li><a (click)="onLogout()" href="#">DECONNEXION</a></li>
+  </ul>
+  <div class="nav__btns">
+    <button (click)="onLogout()" class="btn">DECONNEXION</button>
+  </div>
+</nav>

@@ -1,0 +1,42 @@
+<app-navbar></app-navbar>
+
+<label class="block text-sm font-medium mb-1">Recherche</label>
+<div class="flex gap-2">
+  <div class="flex-1 rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
+    <input
+      type="text"
+      class="block w-full border-0 bg-white px-3 py-2 rounded-md placeholder:text-gray-400 focus:outline-none"
+      placeholder="Rechercher un produit…"
+      [(ngModel)]="query"
+      name="query">
+  </div>
+  <button type="button"
+          class="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500"
+          (click)="onSearch()">
+    Chercher
+  </button>
+</div>
+
+
+<header id="home">
+  <div class="header__container">
+    <div class="header__content">
+      <p>SHOP TDK </p>
+      <h1>The Magic Of SHOPPING</h1>
+      <div class="header__btns">
+        <button class="btn">See more</button>
+      </div>
+    </div>
+    <div class="header__image">
+      <div class="circle-images">
+        <div class="circle">
+          <img src="shops.jpg" alt="header" />
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<p>shop works!</p>
+
+
+<app-footer></app-footer>

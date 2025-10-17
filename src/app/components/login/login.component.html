@@ -1,0 +1,97 @@
+<div class="container" id="container" #container>
+  <!-- SIGN UP -->
+  <div class="form-container sign-up">
+    <form>
+      <div class="logo">
+        <img src="Logo.png" alt="Logo">
+      </div>
+      <h1>Création de compte</h1>
+      <span>Veuillez saisir vos informations</span>
+
+      <input type="text"
+             name="signupUsername"
+             placeholder="Nom d'utilisateur"
+             required
+             [(ngModel)]="signupUsername" />
+
+      <input type="email"
+             name="signupEmail"
+             placeholder="Email"
+             required
+             [(ngModel)]="signupEmail" />
+
+      <input [type]="showPassword ? 'text' : 'password'"
+             name="signupPassword"
+             placeholder="Mot de Passe"
+             required
+             [(ngModel)]="signupPassword" />
+      <i class="fa-solid" [ngClass]="showPassword ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility()"></i>
+
+      <input type="tel"
+             name="signupPhone"
+             placeholder="Numéro de téléphone"
+             pattern="[0-9]{10,15}"
+             maxlength="15"
+             required
+             [(ngModel)]="signupPhone" />
+
+      <button type="button" (click)="onRegister()" [disabled]="isSubmitting">
+        <span *ngIf="!isSubmitting">Inscription</span>
+        <span *ngIf="isSubmitting">Patientez…</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- SIGN IN -->
+  <div class="form-container sign-in">
+    <form>
+      <div class="logo">
+        <img src="Logo.png" alt="Logo">
+      </div>
+      <h1>Connexion</h1>
+      <span>Veuillez saisir vos informations</span>
+
+      <input type="email"
+             name="loginEmail"
+             placeholder="Email"
+             required
+             [(ngModel)]="loginEmail" />
+
+      <input [type]="showPassword2 ? 'text' : 'password'"
+             name="loginPassword"
+             placeholder="Mot de Passe"
+             required
+             [(ngModel)]="loginPassword" />
+      <i class="fa-solid" [ngClass]="showPassword2 ? 'fa-eye-slash' : 'fa-eye'" (click)="togglePasswordVisibility2()" id="context"></i>
+
+      <a href="#">Mot de passe oublié ?</a>
+      <button type="button" (click)="onLogin()">Connexion</button>
+    </form>
+  </div>
+
+  <!-- PANELS -->
+  <div class="toggle-container">
+    <div class="toggle">
+      <div class="toggle-panel toggle-left">
+        <img src="inscription.png" alt="">
+        <p>Bienvenue, connectez-vous à votre compte</p>
+        <button class="hidden" id="login" #loginBtn>Connexion</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+        <img src="Login.png" alt="">
+        <p>Bienvenue, créez votre compte</p>
+        <button class="hidden" id="register" #registerBtn>Inscription</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP DE SUCCÈS -->
+<div class="modal-backdrop" *ngIf="showSignupSuccess"></div>
+<div class="modal" *ngIf="showSignupSuccess" role="dialog" aria-modal="true">
+  <div class="modal-content">
+    <h3>Inscription Réuissi avec Succès </h3>
+    <p>{{ signupSuccessMsg }}</p>
+    <button type="button" (click)="closeSignupSuccess()">OK</button>
+  </div>
+</div>
