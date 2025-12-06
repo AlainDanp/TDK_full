@@ -1,5 +1,168 @@
 <app-navbar></app-navbar>
 
-<p>about works!</p>
+<div class="space"></div>
+
+<!-- Hero Section Simplifié -->
+<div class="about-hero">
+  <div class="hero-content">
+    <h1 class="hero-title">
+      <span class="title-brand">TKD</span>
+      <span class="title-main">AB<span class="title-highlight">O</span>UT</span>
+    </h1>
+  </div>
+</div>
+
+<div class="space"></div>
+
+<!-- Statistics Section -->
+<section class="stats-section container">
+  <div class="stats-grid">
+    <div class="stat-card" *ngFor="let stat of stats">
+      <i class='bx {{stat.icon}} stat-icon'></i>
+      <h3 class="stat-value">{{ stat.value }}</h3>
+      <p class="stat-label">{{ stat.label }}</p>
+    </div>
+  </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<section id="mission" class="mission-section container">
+  <div class="section-header">
+    <h2 class="section-title">Notre Mission</h2>
+    <div class="section-divider"></div>
+  </div>
+
+  <div class="mission-content">
+    <div class="mission-card">
+      <i class='bx bx-target-lock mission-icon'></i>
+      <h3>Notre Mission</h3>
+      <p>
+        Chez TKD, notre mission est de fournir des produits de qualité exceptionnelle à des prix accessibles.
+        Nous nous engageons à offrir une expérience d'achat en ligne simple, sécurisée et agréable pour tous nos clients.
+      </p>
+    </div>
+
+    <div class="mission-card">
+      <i class='bx bx-bulb mission-icon'></i>
+      <h3>Notre Vision</h3>
+      <p>
+        Devenir la plateforme de référence pour le commerce en ligne en Afrique de l'Ouest,
+        en combinant innovation technologique et service client exceptionnel pour créer une expérience d'achat unique.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Nos Valeurs</h2>
+      <div class="section-divider"></div>
+      <p class="section-subtitle">Les principes qui guident notre travail quotidien</p>
+    </div>
+
+    <div class="values-grid">
+      <div class="value-card" *ngFor="let value of values">
+        <div class="value-icon-wrapper">
+          <i class='bx {{value.icon}} value-icon'></i>
+        </div>
+        <h3 class="value-title">{{ value.title }}</h3>
+        <p class="value-description">{{ value.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section container">
+  <div class="section-header">
+    <h2 class="section-title">Notre Équipe</h2>
+    <div class="section-divider"></div>
+    <p class="section-subtitle">Des professionnels passionnés et dévoués</p>
+  </div>
+
+  <div class="team-grid">
+    <div class="team-card" *ngFor="let member of team">
+      <div class="team-image-wrapper">
+        <img [src]="member.image" [alt]="member.name" class="team-image">
+        <div class="team-overlay">
+          <div class="team-social">
+            <a href="#" class="social-link"><i class='bx bxl-linkedin'></i></a>
+            <a href="#" class="social-link"><i class='bx bxl-twitter'></i></a>
+            <a href="#" class="social-link"><i class='bx bx-envelope'></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="team-info">
+        <h3 class="team-name">{{ member.name }}</h3>
+        <p class="team-role">{{ member.role }}</p>
+        <p class="team-description">{{ member.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- History Section -->
+<section class="history-section">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Notre Histoire</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="history-content">
+      <div class="history-text">
+        <div class="history-item">
+          <div class="history-year">2014</div>
+          <div class="history-details">
+            <h3>La Fondation</h3>
+            <p>TKD a été fondée avec la vision de révolutionner le commerce en ligne en Afrique de l'Ouest.</p>
+          </div>
+        </div>
+
+        <div class="history-item">
+          <div class="history-year">2017</div>
+          <div class="history-details">
+            <h3>Expansion Régionale</h3>
+            <p>Ouverture de nouveaux centres de distribution dans 5 pays de la région.</p>
+          </div>
+        </div>
+
+        <div class="history-item">
+          <div class="history-year">2020</div>
+          <div class="history-details">
+            <h3>Innovation Digitale</h3>
+            <p>Lancement de notre plateforme mobile et intégration de l'IA pour personnaliser l'expérience client.</p>
+          </div>
+        </div>
+
+        <div class="history-item">
+          <div class="history-year">2024</div>
+          <div class="history-details">
+            <h3>Leadership du Marché</h3>
+            <p>Plus de 500 clients satisfaits et reconnaissance comme plateforme leader dans la région.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2 class="cta-title">Prêt à commencer votre expérience avec nous ?</h2>
+      <p class="cta-text">Rejoignez des centaines de clients satisfaits et découvrez nos produits de qualité.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" routerLink="/Shop">Voir la Boutique</button>
+        <button class="btn btn-secondary" routerLink="/Home">Contactez-nous</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="space"></div>
 
 <app-footer></app-footer>

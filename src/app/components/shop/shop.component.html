@@ -1,42 +1,592 @@
 <app-navbar></app-navbar>
 
-<label class="block text-sm font-medium mb-1">Recherche</label>
-<div class="flex gap-2">
-  <div class="flex-1 rounded-md ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
-    <input
-      type="text"
-      class="block w-full border-0 bg-white px-3 py-2 rounded-md placeholder:text-gray-400 focus:outline-none"
-      placeholder="Rechercher un produit…"
-      [(ngModel)]="query"
-      name="query">
+<div class="space"></div>
+
+<!-- Cart Sidebar -->
+<div class="cart" [class.active]="isCartOpen">
+  <h2 class="cart-title">Votre Panier</h2>
+  <div class="cart-content">
+    <div class="cart-box" *ngFor="let item of cart; let i = index; trackBy: trackByTitle">
+      <img [src]="item.imgSrc" [alt]="item.title" class="cart-img" />
+      <div class="detail-box">
+        <div class="cart-product-title">{{ item.title }}</div>
+        <div class="cart-price">{{ item.price | number:'1.0-2' }} FCFA</div>
+        <input type="number" class="cart-quantity" [value]="item.qty"
+               (change)="setQuantity(i, $any($event.target).value)" min="1" />
+      </div>
+      <i class='bx bxs-trash-alt cart-remove' (click)="removeFromCart(i)"></i>
+    </div>
+    <div *ngIf="cart.length === 0" class="cart-empty">
+      <i class='bx bx-cart-alt empty-icon'></i>
+      <p>Votre panier est vide</p>
+    </div>
   </div>
-  <button type="button"
-          class="rounded-md bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-500"
-          (click)="onSearch()">
-    Chercher
+  <div class="total" *ngIf="cart.length > 0">
+    <div class="total-title">Total</div>
+    <div class="total-price">{{ total | number:'1.0-2' }} FCFA</div>
+  </div>
+
+  <button type="button" class="btn-buy" (click)="buyOrder()" *ngIf="cart.length > 0">
+    <i class='bx bx-shopping-bag'></i>
+    Acheter Maintenant
   </button>
+  <i class='bx bx-x' id="cart-close" (click)="closeCart()"></i>
 </div>
 
 
-<header id="home">
-  <div class="header__container">
-    <div class="header__content">
-      <p>SHOP TDK </p>
-      <h1>The Magic Of SHOPPING</h1>
-      <div class="header__btns">
-        <button class="btn">See more</button>
-      </div>
+
+
+<!-- Cart Button -->
+<button id="cart-icon" (click)="openCart()" class="cart-button">
+  <i class='bx bx-shopping-bag'></i>
+  <span class="cart-badge" *ngIf="cart.length > 0">{{ cart.length }}</span>
+</button>
+
+<!-- Hero Section Simple -->
+<div class="hero-banner">
+  <h1>Découvrez Nos Produits</h1>
+  <p>La qualité à portée de main</p>
+
+  <div class="search-wrapper">
+    <div class="search-container">
+      <input type="search" placeholder="Rechercher un produit..." class="search-input" />
+      <i class="bx bx-search search-icon"></i>
     </div>
-    <div class="header__image">
-      <div class="circle-images">
-        <div class="circle">
-          <img src="shops.jpg" alt="header" />
+  </div>
+</div>
+
+<!-- Section: Produits Tendance -->
+<section class="shop container">
+  <h2 class="section-title">
+    <i class='bx bx-gift'></i>
+    Produits Tendance
+  </h2>
+  <div class="shop-content">
+
+    <div class="product-box">
+      <div class="product-badge">Nouveau</div>
+      <img src="prod1.jpg" alt="Tote bag" class="product-img"
+           (click)="openPreview({ title: 'Tote bag', price: 2000, imgSrc: 'prod1.jpg', desc: 'Sac en toile 100% coton, réutilisable et écologique. Parfait pour vos courses quotidiennes.' })">
+      <div class="product-info">
+        <h3 class="product-title">Tote bag</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
         </div>
+        <span class="product-price">2000 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Tote bag', price: 2000, imgSrc: 'prod1.jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shops.jpg" alt="Porte Clé" class="product-img"
+           (click)="openPreview({ title: 'Porte Clé', price: 100, imgSrc: 'shops.jpg', desc: 'Porte-clés en métal élégant, léger et résistant.' })">
+      <div class="product-info">
+        <h3 class="product-title">Porte Clé</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">100 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Porte Clé', price: 100, imgSrc: 'shops.jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <div class="product-badge promo">Promo</div>
+      <img src="prod2.jpg" alt="Clé USB" class="product-img"
+           (click)="openPreview({ title: 'Clé USB 32Go', price: 2000, imgSrc: 'prod2.jpg', desc: 'Clé USB 32Go avec vitesse de transfert rapide.' })">
+      <div class="product-info">
+        <h3 class="product-title">Clé USB 32Go</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">2000 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Clé USB', price: 2000, imgSrc: 'prod3.jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="prod3.jpg" alt="Casquette" class="product-img"
+           (click)="openPreview({ title: 'Casquette', price: 1500, imgSrc: 'prod3.jpg', desc: 'Casquette ajustable en coton premium.' })">
+      <div class="product-info">
+        <h3 class="product-title">Casquette</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">1500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Casquette', price: 1500, imgSrc: 'prod3.jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="prod4.jpg" alt="T-SHIRT" class="product-img"
+           (click)="openPreview({ title: 'T-SHIRT', price: 2500, imgSrc: 'prod4.jpg', desc: 'T-shirt 100% coton biologique, respirant et doux.' })">
+      <div class="product-info">
+        <h3 class="product-title">T-SHIRT</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
+        </div>
+        <span class="product-price">2500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'T-SHIRT', price: 2500, imgSrc: 'prod4.jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="prod5.jpg" alt="Parapluie" class="product-img"
+           (click)="openPreview({ title: 'Parapluie', price: 1700, imgSrc: 'prod5.jpg', desc: 'Parapluie compact et résistant au vent.' })">
+      <div class="product-info">
+        <h3 class="product-title">Parapluie</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">1700 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Parapluie', price: 1700, imgSrc: 'prod5.jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (2).jpg" alt="Bloc-Note" class="product-img"
+           (click)="openPreview({ title: 'Bloc-Note', price: 1000, imgSrc: 'shop (2).jpg', desc: 'Bloc-notes 200 pages avec couverture rigide.' })">
+      <div class="product-info">
+        <h3 class="product-title">Bloc-Note</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">1000 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Bloc-Note', price: 1000, imgSrc: 'shop (2).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (3).jpg" alt="Tasse" class="product-img"
+           (click)="openPreview({ title: 'Tasse', price: 2500, imgSrc: 'shop (3).jpg', desc: 'Tasse en céramique 350ml.' })">
+      <div class="product-info">
+        <h3 class="product-title">Tasse</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">2500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Tasse', price: 2500, imgSrc: 'shop (3).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Section: Produits Cuisine -->
+<section class="shop container">
+  <h2 class="section-title">
+    <i class='bx bx-restaurant'></i>
+    Produits Cuisine
+  </h2>
+  <div class="shop-content">
+
+    <div class="product-box">
+      <img src="shop (4).jpg" alt="Poulet Yassa" class="product-img"
+           (click)="openPreview({ title: 'Poulet Yassa', price: 1500, imgSrc: 'shop (4).jpg', desc: 'Délicieux poulet mariné avec oignons caramélisés et citron.' })">
+      <div class="product-info">
+        <h3 class="product-title">Poulet Yassa</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
+        </div>
+        <span class="product-price">1500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Poulet Yassa', price: 1500, imgSrc: 'shop (4).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <div class="product-badge best">Best</div>
+      <img src="shop (5).jpg" alt="Thiéboudienne" class="product-img"
+           (click)="openPreview({ title: 'Thiéboudienne', price: 2000, imgSrc: 'shop (5).jpg', desc: 'Riz au poisson avec légumes frais et sauce tomate maison.' })">
+      <div class="product-info">
+        <h3 class="product-title">Thiéboudienne</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">2000 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Thiéboudienne', price: 2000, imgSrc: 'shop (5).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (6).jpg" alt="Mafé" class="product-img"
+           (click)="openPreview({ title: 'Mafé', price: 1800, imgSrc: 'shop (6).jpg', desc: 'Ragoût onctueux à la sauce d\'arachide avec légumes variés.' })">
+      <div class="product-info">
+        <h3 class="product-title">Mafé</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">1800 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Mafé', price: 1800, imgSrc: 'shop (6).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (7).jpg" alt="Couscous" class="product-img"
+           (click)="openPreview({ title: 'Couscous', price: 1700, imgSrc: 'shop (7).jpg', desc: 'Couscous traditionnel avec viande tendre et légumes de saison.' })">
+      <div class="product-info">
+        <h3 class="product-title">Couscous</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">1700 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Couscous', price: 1700, imgSrc: 'shop (7).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (8).jpg" alt="Sauce Gombo" class="product-img"
+           (click)="openPreview({ title: 'Sauce Gombo', price: 1600, imgSrc: 'shop (8).jpg', desc: 'Gombo frais mijoté avec viande et poisson fumé.' })">
+      <div class="product-info">
+        <h3 class="product-title">Sauce Gombo</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">1600 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Sauce Gombo', price: 1600, imgSrc: 'shop (8).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (9).jpg" alt="Pastels" class="product-img"
+           (click)="openPreview({ title: 'Pastels', price: 500, imgSrc: 'shop (9).jpg', desc: 'Beignets de poisson croustillants et épicés.' })">
+      <div class="product-info">
+        <h3 class="product-title">Pastels</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Pastels', price: 500, imgSrc: 'shop (9).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (10).jpg" alt="Alloco" class="product-img"
+           (click)="openPreview({ title: 'Alloco', price: 800, imgSrc: 'shop (10).jpg', desc: 'Bananes plantains frites dorées avec sauce pimentée maison.' })">
+      <div class="product-info">
+        <h3 class="product-title">Alloco</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
+        </div>
+        <span class="product-price">800 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Alloco', price: 800, imgSrc: 'shop (10).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Section: Produits Divers -->
+<section class="shop container">
+  <h2 class="section-title">
+    <i class='bx bx-category'></i>
+    Produits Divers
+  </h2>
+  <div class="shop-content">
+
+    <div class="product-box">
+      <img src="shop (11).jpg" alt="Cahier A4" class="product-img"
+           (click)="openPreview({ title: 'Cahier A4', price: 1200, imgSrc: 'shop (11).jpg', desc: 'Cahier 200 pages avec couverture cartonnée résistante.' })">
+      <div class="product-info">
+        <h3 class="product-title">Cahier A4</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">1200 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Cahier A4', price: 1200, imgSrc: 'shop (11).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (12).jpg" alt="Stylos Pack" class="product-img"
+           (click)="openPreview({ title: 'Stylos Pack', price: 800, imgSrc: 'shop (12).jpg', desc: 'Pack de 10 stylos bille avec encre bleue de qualité.' })">
+      <div class="product-info">
+        <h3 class="product-title">Stylos Pack</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">800 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Stylos Pack', price: 800, imgSrc: 'shop (12).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <div class="product-badge top">Top</div>
+      <img src="shop (13).jpg" alt="Sac à Dos" class="product-img"
+           (click)="openPreview({ title: 'Sac à Dos', price: 3500, imgSrc: 'shop (13).jpg', desc: 'Sac à dos ergonomique avec compartiments multiples.' })">
+      <div class="product-info">
+        <h3 class="product-title">Sac à Dos</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">3500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Sac à Dos', price: 3500, imgSrc: 'shop (13).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (14).jpg" alt="Calculatrice" class="product-img"
+           (click)="openPreview({ title: 'Calculatrice', price: 1500, imgSrc: 'shop (14).jpg', desc: 'Calculatrice scientifique avec affichage LCD.' })">
+      <div class="product-info">
+        <h3 class="product-title">Calculatrice</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
+        </div>
+        <span class="product-price">1500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Calculatrice', price: 1500, imgSrc: 'shop (14).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (15).jpg" alt="Lampe Bureau" class="product-img"
+           (click)="openPreview({ title: 'Lampe Bureau', price: 2800, imgSrc: 'shop (15).jpg', desc: 'Lampe LED ajustable avec économie d\'énergie.' })">
+      <div class="product-info">
+        <h3 class="product-title">Lampe Bureau</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bx-star'></i>
+        </div>
+        <span class="product-price">2800 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Lampe Bureau', price: 2800, imgSrc: 'shop (15).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (16).jpg" alt="Agenda 2025" class="product-img"
+           (click)="openPreview({ title: 'Agenda 2025', price: 1800, imgSrc: 'shop (16).jpg', desc: 'Agenda annuel avec planification hebdomadaire.' })">
+      <div class="product-info">
+        <h3 class="product-title">Agenda 2025</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+        </div>
+        <span class="product-price">1800 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Agenda 2025', price: 1800, imgSrc: 'shop (16).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+
+    <div class="product-box">
+      <img src="shop (17).jpg" alt="Écouteurs" class="product-img"
+           (click)="openPreview({ title: 'Écouteurs', price: 2500, imgSrc: 'shop (17).jpg', desc: 'Écouteurs intra-auriculaires avec son haute qualité.' })">
+      <div class="product-info">
+        <h3 class="product-title">Écouteurs</h3>
+        <div class="product-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
+        </div>
+        <span class="product-price">2500 FCFA</span>
+      </div>
+      <button class="add-cart" (click)="addToCart({ title: 'Écouteurs', price: 2500, imgSrc: 'shop (17).jpg' })">
+        <i class='bx bx-cart-add'></i>
+        Ajouter
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Popup Améliorée -->
+<div class="preview-overlay" *ngIf="previewOpen" (click)="closePreview()">
+  <div class="preview-modal" (click)="$event.stopPropagation()">
+    <button class="preview-close" (click)="closePreview()">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="preview-content">
+      <div class="preview-image-container">
+        <img [src]="previewSrc!" [alt]="previewTitle || 'Aperçu produit'" class="preview-image">
+      </div>
+
+      <div class="preview-info">
+        <h2 class="preview-title">{{ previewTitle }}</h2>
+
+        <div class="preview-rating">
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star'></i>
+          <i class='bx bxs-star-half'></i>
+          <span class="rating-count">(4.5/5)</span>
+        </div>
+
+        <p class="preview-desc" *ngIf="previewDesc as d">{{ d }}</p>
+
+        <div class="preview-features">
+          <div class="feature-item">
+            <i class='bx bx-check-circle'></i>
+            <span>Qualité garantie</span>
+          </div>
+          <div class="feature-item">
+            <i class='bx bx-shield'></i>
+            <span>Garantie 30 jours</span>
+          </div>
+          <div class="feature-item">
+            <i class='bx bx-package'></i>
+            <span>Livraison rapide</span>
+          </div>
+        </div>
+
+        <div class="preview-price-section">
+          <div class="preview-price" *ngIf="previewPrice as p">
+            {{ p | number:'1.0-2' }} FCFA
+          </div>
+          <div class="preview-stock">
+            <i class='bx bx-check'></i>
+            En stock
+          </div>
+        </div>
+
+        <button type="button" class="btn-add-preview" (click)="addPreviewToCart()">
+          <i class='bx bx-cart-add'></i>
+          Ajouter au panier
+        </button>
       </div>
     </div>
   </div>
-</header>
-<p>shop works!</p>
-
+</div>
 
 <app-footer></app-footer>

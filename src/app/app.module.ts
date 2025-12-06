@@ -14,6 +14,11 @@ import { ShopComponent } from './components/shop/shop.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { OptionComponent } from './components/option/option.component';
+import { FaqComponent } from './components/faq/faq.component';
+import { SupportComponent } from './components/support/support.component';
+import { ConditionComponent } from './components/condition/condition.component';
+import { ConfidentielComponent } from './components/confidentiel/confidentiel.component';
+
 
 @NgModule({
   declarations: [
@@ -26,6 +31,10 @@ import { OptionComponent } from './components/option/option.component';
     AboutComponent,
     ShopComponent,
     OptionComponent,
+    FaqComponent,
+    SupportComponent,
+    ConditionComponent,
+    ConfidentielComponent,
   ],
   imports: [
     HttpClientModule,

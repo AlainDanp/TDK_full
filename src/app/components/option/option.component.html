@@ -1,5 +1,623 @@
 <app-navbar></app-navbar>
 
-<p>option works!</p>
+<div class="space"></div>
+
+<!-- Container Principal -->
+<div class="options-container">
+
+  <!-- Header avec Profil -->
+  <div class="profile-header">
+    <div class="profile-image-wrapper">
+      <img [src]="userProfile.avatar" [alt]="userProfile.name" class="profile-image">
+      <button class="edit-photo-btn" (click)="changeProfilePhoto()">
+        <i class='bx bx-camera'></i>
+      </button>
+    </div>
+    <div class="profile-info">
+      <h1 class="profile-name">{{ userProfile.name }}</h1>
+      <p class="profile-email">{{ userProfile.email }}</p>
+      <span class="profile-badge">{{ userProfile.role }}</span>
+    </div>
+  </div>
+
+  <!-- Section: Mon Compte -->
+  <section class="option-section">
+    <h2 class="section-title">
+      <i class='bx bx-user-circle'></i>
+      Mon Compte
+    </h2>
+    <div class="option-grid">
+
+      <div class="option-card" (click)="editProfile()">
+        <div class="option-icon blue">
+          <i class='bx bx-edit-alt'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Modifier le profil</h3>
+          <p class="option-desc">Mettre à jour vos informations personnelles</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card" (click)="viewOrders()">
+        <div class="option-icon green">
+          <i class='bx bx-package'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Mes commandes</h3>
+          <p class="option-desc">Consulter l'historique de vos achats</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card" (click)="manageAddresses()">
+        <div class="option-icon purple">
+          <i class='bx bx-map'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Adresses de livraison</h3>
+          <p class="option-desc">Gérer vos adresses enregistrées</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card" (click)="paymentMethods_open()">
+        <div class="option-icon orange">
+          <i class='bx bx-credit-card'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Moyens de paiement</h3>
+          <p class="option-desc">Gérer vos cartes et méthodes de paiement</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section: Sécurité et Confidentialité -->
+  <section class="option-section">
+    <h2 class="section-title">
+      <i class='bx bx-shield-quarter'></i>
+      Sécurité et Confidentialité
+    </h2>
+    <div class="option-grid">
+
+      <div class="option-card" (click)="changePassword()">
+        <div class="option-icon red">
+          <i class='bx bx-lock-alt'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Changer le mot de passe</h3>
+          <p class="option-desc">Modifier votre mot de passe actuel</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card" (click)="twoFactorAuth()">
+        <div class="option-icon teal">
+          <i class='bx bx-shield-alt-2'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Authentification à deux facteurs</h3>
+          <p class="option-desc">Sécuriser davantage votre compte</p>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="2fa" [(ngModel)]="settings.twoFactorEnabled" (change)="toggleTwoFactor()">
+          <label for="2fa"></label>
+        </div>
+      </div>
+
+      <div class="option-card" (click)="privacySettings()">
+        <div class="option-icon indigo">
+          <i class='bx bx-hide'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Confidentialité</h3>
+          <p class="option-desc">Gérer vos paramètres de confidentialité</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section: Préférences -->
+  <section class="option-section">
+    <h2 class="section-title">
+      <i class='bx bx-cog'></i>
+      Préférences
+    </h2>
+    <div class="option-grid">
+
+      <div class="option-card" (click)="notificationSettings()">
+        <div class="option-icon yellow">
+          <i class='bx bx-bell'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Notifications</h3>
+          <p class="option-desc">Gérer vos préférences de notifications</p>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="notif" [(ngModel)]="settings.notificationsEnabled" (change)="toggleNotifications()">
+          <label for="notif"></label>
+        </div>
+      </div>
+
+      <div class="option-card" (click)="languageSettings()">
+        <div class="option-icon pink">
+          <i class='bx bx-world'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Langue</h3>
+          <p class="option-desc">{{ settings.language }}</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card">
+        <div class="option-icon dark">
+          <i class='bx bx-moon'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Mode sombre</h3>
+          <p class="option-desc">Activer le thème sombre</p>
+        </div>
+        <div class="toggle-switch">
+          <input type="checkbox" id="dark" [(ngModel)]="settings.darkModeEnabled" (change)="toggleDarkMode()">
+          <label for="dark"></label>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section: Aide et Support -->
+  <section class="option-section">
+    <h2 class="section-title">
+      <i class='bx bx-help-circle'></i>
+      Aide et Support
+    </h2>
+    <div class="option-grid">
+
+      <div class="option-card" (click)="contactSupport()">
+        <div class="option-icon cyan">
+          <i class='bx bx-message-square-dots'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Contacter le support</h3>
+          <p class="option-desc">Obtenir de l'aide pour vos questions</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card" (click)="faq()">
+        <div class="option-icon lime">
+          <i class='bx bx-book-open'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">FAQ</h3>
+          <p class="option-desc">Questions fréquemment posées</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card" (click)="termsConditions()">
+        <div class="option-icon gray">
+          <i class='bx bx-file-blank'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Conditions d'utilisation</h3>
+          <p class="option-desc">Lire nos conditions générales</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Section: Actions Critiques -->
+  <section class="option-section danger-section">
+    <h2 class="section-title">
+      <i class='bx bx-error-circle'></i>
+      Zone Dangereuse
+    </h2>
+    <div class="option-grid">
+
+      <div class="option-card danger-card" (click)="logout()">
+        <div class="option-icon danger">
+          <i class='bx bx-log-out'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Déconnexion</h3>
+          <p class="option-desc">Se déconnecter de votre compte</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+      <div class="option-card danger-card" (click)="confirmDeleteAccount()">
+        <div class="option-icon danger-solid">
+          <i class='bx bx-trash'></i>
+        </div>
+        <div class="option-content">
+          <h3 class="option-title">Supprimer le compte</h3>
+          <p class="option-desc">Supprimer définitivement votre compte</p>
+        </div>
+        <i class='bx bx-chevron-right option-arrow'></i>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Version de l'app -->
+  <div class="app-version">
+    <p>Version {{ appVersion }}</p>
+    <p class="copyright">© 2025 Votre Entreprise. Tous droits réservés.</p>
+  </div>
+
+</div>
+
+<!-- ================================
+     MODALS
+     ================================ -->
+
+<!-- MODAL: Modifier le Profil -->
+<div class="modal-overlay" *ngIf="showEditProfileModal" (click)="closeModal('editProfile')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('editProfile')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="modal-icon blue">
+      <i class='bx bx-edit-alt'></i>
+    </div>
+    <h2 class="modal-title">Modifier mon profil</h2>
+
+    <form>
+      <div class="form-group">
+        <label class="form-label">Nom complet *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempProfile.name" name="name" placeholder="Jean Dupont">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input type="email" class="form-input" [(ngModel)]="tempProfile.email" name="email" placeholder="jean.dupont@example.com">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Téléphone</label>
+        <input type="tel" class="form-input" [(ngModel)]="tempProfile.phone" name="phone" placeholder="+33 6 12 34 56 78">
+      </div>
+    </form>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal('editProfile')">Annuler</button>
+      <button class="btn-save" (click)="saveProfile()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Mes Commandes -->
+<div class="modal-overlay" *ngIf="showOrdersModal" (click)="closeModal('orders')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('orders')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="modal-icon green">
+      <i class='bx bx-package'></i>
+    </div>
+    <h2 class="modal-title">Mes commandes</h2>
+
+    <div *ngIf="orders.length > 0">
+      <div class="list-item" *ngFor="let order of orders">
+        <div class="list-item-content">
+          <h4>Commande #{{ order.id }}</h4>
+          <p>{{ order.date }} • {{ order.items }} article(s) • {{ order.total }}€</p>
+          <p style="margin-top: 4px;">
+            <span [style.color]="'var(--color-' + getStatusColor(order.status) + ')'">
+              <strong>{{ order.status }}</strong>
+            </span>
+          </p>
+        </div>
+        <div class="list-item-actions">
+          <button class="btn-icon edit" title="Voir les détails">
+            <i class='bx bx-show'></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="orders.length === 0">
+      <i class='bx bx-package'></i>
+      <p>Aucune commande pour le moment</p>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Adresses de Livraison -->
+<div class="modal-overlay" *ngIf="showAddressesModal" (click)="closeModal('addresses')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('addresses')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="modal-icon purple">
+      <i class='bx bx-map'></i>
+    </div>
+    <h2 class="modal-title">Mes adresses</h2>
+
+    <div *ngIf="addresses.length > 0">
+      <div class="list-item" *ngFor="let address of addresses">
+        <div class="list-item-content">
+          <h4>
+            {{ address.name }}
+            <span *ngIf="address.isDefault" style="color: var(--success-green); font-size: 0.85rem; margin-left: 8px;">
+              ✓ Par défaut
+            </span>
+          </h4>
+          <p>{{ address.street }}</p>
+          <p>{{ address.zipCode }} {{ address.city }}</p>
+        </div>
+        <div class="list-item-actions">
+          <button class="btn-icon edit" title="Définir par défaut" (click)="setDefaultAddress(address.id)" *ngIf="!address.isDefault">
+            <i class='bx bx-star'></i>
+          </button>
+          <button class="btn-icon delete" title="Supprimer" (click)="deleteAddress(address.id)">
+            <i class='bx bx-trash'></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="addresses.length === 0">
+      <i class='bx bx-map'></i>
+      <p>Aucune adresse enregistrée</p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" (click)="openAddAddressModal()">
+        <i class='bx bx-plus'></i> Ajouter une adresse
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ajouter une Adresse -->
+<div class="modal-overlay" *ngIf="showAddAddressModal" (click)="closeModal('addAddress')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('addAddress')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <h2 class="modal-title">Nouvelle adresse</h2>
+
+    <form>
+      <div class="form-group">
+        <label class="form-label">Nom de l'adresse *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempAddress.name" name="addressName" placeholder="Domicile, Bureau...">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Rue *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempAddress.street" name="street" placeholder="123 Rue de la Paix">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Code postal *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempAddress.zipCode" name="zipCode" placeholder="75001">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Ville *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempAddress.city" name="city" placeholder="Paris">
+      </div>
+
+      <div class="form-group">
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+          <input type="checkbox" [(ngModel)]="tempAddress.isDefault" name="isDefault">
+          <span>Définir comme adresse par défaut</span>
+        </label>
+      </div>
+    </form>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal('addAddress')">Annuler</button>
+      <button class="btn-save" (click)="saveAddress()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Moyens de Paiement -->
+<div class="modal-overlay" *ngIf="showPaymentMethodsModal" (click)="closeModal('payment')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('payment')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="modal-icon orange">
+      <i class='bx bx-credit-card'></i>
+    </div>
+    <h2 class="modal-title">Moyens de paiement</h2>
+
+    <div *ngIf="paymentMethods.length > 0">
+      <div class="list-item" *ngFor="let payment of paymentMethods">
+        <div class="list-item-content">
+          <h4>
+            {{ payment.type }} •••• {{ payment.last4 }}
+            <span *ngIf="payment.isDefault" style="color: var(--success-green); font-size: 0.85rem; margin-left: 8px;">
+              ✓ Par défaut
+            </span>
+          </h4>
+          <p>Expire le {{ payment.expiryDate }}</p>
+        </div>
+        <div class="list-item-actions">
+          <button class="btn-icon edit" title="Définir par défaut" (click)="setDefaultPayment(payment.id)" *ngIf="!payment.isDefault">
+            <i class='bx bx-star'></i>
+          </button>
+          <button class="btn-icon delete" title="Supprimer" (click)="deletePaymentMethod(payment.id)">
+            <i class='bx bx-trash'></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="paymentMethods.length === 0">
+      <i class='bx bx-credit-card'></i>
+      <p>Aucun moyen de paiement enregistré</p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-primary" (click)="openAddPaymentModal()">
+        <i class='bx bx-plus'></i> Ajouter une carte
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Ajouter un Moyen de Paiement -->
+<div class="modal-overlay" *ngIf="showAddPaymentModal" (click)="closeModal('addPayment')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('addPayment')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <h2 class="modal-title">Nouvelle carte</h2>
+
+    <form>
+      <div class="form-group">
+        <label class="form-label">Type de carte *</label>
+        <select class="form-select" [(ngModel)]="tempPayment.type" name="cardType">
+          <option value="Visa">Visa</option>
+          <option value="Mastercard">Mastercard</option>
+          <option value="American Express">American Express</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">4 derniers chiffres *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempPayment.last4" name="last4" placeholder="4242" maxlength="4">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Date d'expiration *</label>
+        <input type="text" class="form-input" [(ngModel)]="tempPayment.expiryDate" name="expiry" placeholder="MM/YY">
+      </div>
+
+      <div class="form-group">
+        <label style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+          <input type="checkbox" [(ngModel)]="tempPayment.isDefault" name="isDefaultPayment">
+          <span>Définir comme moyen de paiement par défaut</span>
+        </label>
+      </div>
+    </form>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal('addPayment')">Annuler</button>
+      <button class="btn-save" (click)="savePaymentMethod()">Enregistrer</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Changer le Mot de Passe -->
+<div class="modal-overlay" *ngIf="showPasswordModal" (click)="closeModal('password')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('password')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="modal-icon red">
+      <i class='bx bx-lock-alt'></i>
+    </div>
+    <h2 class="modal-title">Changer le mot de passe</h2>
+
+    <form>
+      <div class="form-group">
+        <label class="form-label">Mot de passe actuel *</label>
+        <input type="password" class="form-input" [(ngModel)]="passwordData.current" name="currentPassword" placeholder="••••••••">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nouveau mot de passe *</label>
+        <input type="password" class="form-input" [(ngModel)]="passwordData.new" name="newPassword" placeholder="••••••••">
+        <small class="form-error" *ngIf="passwordData.new && passwordData.new.length < 6">
+          Le mot de passe doit contenir au moins 6 caractères
+        </small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Confirmer le mot de passe *</label>
+        <input type="password" class="form-input" [(ngModel)]="passwordData.confirm" name="confirmPassword" placeholder="••••••••">
+        <small class="form-error" *ngIf="passwordData.confirm && passwordData.new !== passwordData.confirm">
+          Les mots de passe ne correspondent pas
+        </small>
+      </div>
+    </form>
+
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeModal('password')">Annuler</button>
+      <button class="btn-save" (click)="savePassword()">Changer le mot de passe</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Changer la Langue -->
+<div class="modal-overlay" *ngIf="showLanguageModal" (click)="closeModal('language')">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <button class="modal-close" (click)="closeModal('language')">
+      <i class='bx bx-x'></i>
+    </button>
+
+    <div class="modal-icon pink">
+      <i class='bx bx-world'></i>
+    </div>
+    <h2 class="modal-title">Choisir la langue</h2>
+
+    <div class="list-item" (click)="selectLanguage('Français')" style="cursor: pointer;">
+      <div class="list-item-content">
+        <h4>🇫🇷 Français</h4>
+      </div>
+      <i class='bx bx-check' *ngIf="settings.language === 'Français'" style="font-size: 1.5rem; color: var(--success-green);"></i>
+    </div>
+
+    <div class="list-item" (click)="selectLanguage('English')" style="cursor: pointer;">
+      <div class="list-item-content">
+        <h4>🇬🇧 English</h4>
+      </div>
+      <i class='bx bx-check' *ngIf="settings.language === 'English'" style="font-size: 1.5rem; color: var(--success-green);"></i>
+    </div>
+
+    <div class="list-item" (click)="selectLanguage('Español')" style="cursor: pointer;">
+      <div class="list-item-content">
+        <h4>🇪🇸 Español</h4>
+      </div>
+      <i class='bx bx-check' *ngIf="settings.language === 'Español'" style="font-size: 1.5rem; color: var(--success-green);"></i>
+    </div>
+
+    <div class="list-item" (click)="selectLanguage('Deutsch')" style="cursor: pointer;">
+      <div class="list-item-content">
+        <h4>🇩🇪 Deutsch</h4>
+      </div>
+      <i class='bx bx-check' *ngIf="settings.language === 'Deutsch'" style="font-size: 1.5rem; color: var(--success-green);"></i>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: Confirmation Suppression Compte -->
+<div class="modal-overlay" *ngIf="showDeleteModal" (click)="closeDeleteModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-icon danger-solid">
+      <i class='bx bx-error-circle'></i>
+    </div>
+    <h2 class="modal-title">Supprimer votre compte ?</h2>
+    <p class="modal-text">
+      Cette action est <strong>irréversible</strong>. Toutes vos données seront définitivement supprimées et vous ne pourrez plus accéder à votre compte.
+    </p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="closeDeleteModal()">Annuler</button>
+      <button class="btn-delete" (click)="deleteAccount()">Supprimer définitivement</button>
+    </div>
+  </div>
+</div>
 
 <app-footer></app-footer>

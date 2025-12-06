@@ -1,7 +1,7 @@
 :host {
-  min-height: 100svh; /* 100vh moderne */
+  min-height: 100svh;
   display: grid;
-  place-items: center; /* centre le formulaire */
+  place-items: center;
   background: linear-gradient(to right, #083668, #c9d6ff);
 }
 

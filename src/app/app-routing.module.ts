@@ -7,7 +7,8 @@ import {AboutComponent} from './components/about/about.component';
 import {ShopComponent} from './components/shop/shop.component';
 import {AuthGuard} from './guards/auth.guard';
 import {OptionComponent} from './components/option/option.component';
-
+import {FaqComponent} from './components/faq/faq.component';
+import {SupportComponent} from './components/support/support.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'login', pathMatch: 'full'},
@@ -21,7 +22,13 @@ const routes: Routes = [
       {path: 'Home', component: HomeComponent},
       {path: 'About',component: AboutComponent},
       {path: 'Shop', component: ShopComponent},
-      {path: 'Option', component: OptionComponent}
+      {path: 'Option', component: OptionComponent,
+       children:[
+         {path: 'FAQ', component: FaqComponent},
+         {path: 'contact-Support', component: SupportComponent},
+         {path: ''}
+       ]
+      }
     ]
   }
 ];
